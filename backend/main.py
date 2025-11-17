@@ -46,7 +46,8 @@ async def get_hmax(
         r.raise_for_status()
         with open(local_file, "wb") as f:
             f.write(r.content)
-    ds = xr.open_dataset(FILE_PATH, engine="netcdf4")
+
+    ds = xr.open_dataset(local_file, engine="netcdf4")
     dt = datetime.datetime.strptime(date, "%Y-%m-%d")
     try:
         max_hmax = (
