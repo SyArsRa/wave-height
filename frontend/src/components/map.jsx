@@ -61,7 +61,7 @@ function FullPageMap({ onLoad }) {
             className="custom-popup"
           >
             <div className="bg-white/95 rounded-lg border-2 border-yellow-600  shadow-lg px-3 py-2 min-w-[200px] text-sm relative">
-              <span className="absolute -top-1.5 -left-1.5 w-4 h-3 bg-yellow-600 rounded-full shadow-lg border border-yellow-600"></span>
+              <span className="absolute -top-1.5 -left-1.5 w-3 h-3 bg-yellow-600 rounded-full shadow-lg border border-yellow-600"></span>
               <div className="text-xs text-gray-600 mb-1">
                 Latitude: {popupInfo.lat.toFixed(4)}° | Longitude: {popupInfo.lng.toFixed(4)}°
               </div>
