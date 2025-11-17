@@ -1,8 +1,17 @@
+import os
+import requests
 import xarray as xr
 
-file_path = 'waves_2019-01-01\\waves_2019-01-01.nc'  # Replace with the actual path to your .nc file
-ds = xr.open_dataset(file_path)
+url = os.environ.get("NETCDF_FILE_PATH", "waves_2019-01-01.nc")
+local_file = "waves_2019-01-01.nc"
 
+if not os.path.exists(local_file):
+    r = requests.get(url)
+    r.raise_for_status()
+    with open(local_file, "wb") as f:
+        f.write(r.content)
+
+ds = xr.open_dataset(local_file, engine="netcdf4")
 lat = 0.0
 lon = 0.0
 date = "2019-01-01"

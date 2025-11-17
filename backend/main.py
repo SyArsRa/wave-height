@@ -7,6 +7,7 @@ from fastapi import (
 )
 from fastapi.middleware.cors import CORSMiddleware
 import xarray as xr
+import requests
 
 
 import os
@@ -14,7 +15,8 @@ import os
 import dotenv
 dotenv.load_dotenv()
 
-FILE_PATH = os.environ.get("NETCDF_FILE_PATH", "waves_2019-01-01/waves_2019-01-01.nc")
+FILE_PATH = os.environ.get("NETCDF_FILE_PATH", "waves_2019-01-01.nc")
+local_file = "waves_2019-01-01.nc"
 
 log = logging.getLogger("uvicorn")
 log.setLevel(logging.INFO)
@@ -37,9 +39,14 @@ async def read_root() -> dict[str, str]:
 async def get_hmax(
     lat: float = Query(...),
     lon: float = Query(...),
-    date: str = Query(...)  # pass as 'YYYY-MM-DD'
+    date: str = Query(...)  #YYYY-MM-DD
 ):
-    ds = xr.open_dataset(FILE_PATH)
+    if not os.path.exists(local_file):
+        r = requests.get(FILE_PATH)
+        r.raise_for_status()
+        with open(local_file, "wb") as f:
+            f.write(r.content)
+    ds = xr.open_dataset(FILE_PATH, engine="netcdf4")
     dt = datetime.datetime.strptime(date, "%Y-%m-%d")
     try:
         max_hmax = (
