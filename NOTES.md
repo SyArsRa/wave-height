@@ -1,3 +1,6 @@
+# Answer to Question 1
+- The maximum wave height on 2019-01-01 at latitude 0.00 and longitude 0.00 was 2.3259899543172153 meters.
+
 # Answer to Question 3
 
 ### Basic steps I would take:
