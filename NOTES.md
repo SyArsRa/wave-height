@@ -1,23 +1,22 @@
 # Answer to Question 3
 
 ### Basic steps I would take:
-1. Understand the basic user requirements.  
-2. Design a strategy by researching methods like chunking large NetCDF files, distributed processing with Dask or Ray, server-side processing, and lazy loading of data.  
-3. Compare different tools like xarray, NetCDF4, and cloud-friendly storage formats like Zarr for storing and processing wave height data efficiently.  
-4. Prototype to measure runtime and memory usage for fetching/processing each (lat,lon) point, test both in-memory and S3-based approaches.  
-5. Implement caching and pre-computation, calculating and storing maximum wave heights for each lat and lon to reduce repeated heavy computations.  
-6. Design a backend API using effective strategies learnt through prototyping and testing.  
-7. Test the end-to-end workflow, spot bottlenecks in dataset loading, API response, frontend rendering, optimize for speed and minimal memory usage.  
-8. Deploy
+1. Design a strategy by researching methods like chunking large NetCDF files, distributed processing with Dask or Ray, server-side processing, and lazy loading of data.  
+2. Compare different tools like xarray, NetCDF4, and cloud-friendly storage formats like Zarr for storing and processing wave height data efficiently.  
+3. Prototype to measure runtime and memory usage for fetching/processing each (lat,lon) point, test all approaches.  
+4. Implement caching and pre-computation, calculating and storing maximum wave heights for each lat and lon to reduce repeated heavy computations.  
+5. Design a backend API using effective strategies learnt through prototyping and testing.  
+6. Test the end-to-end workflow, spot bottlenecks in dataset loading, API response, frontend rendering, optimize for speed and minimal memory usage.  
+7. Deploy.
 
 ### Main Concerns
-- Large amounts of data points (high compute + memory required)
-- Runtime of xarray processing due to dataset size and possibly slow I/O
-- Choosing chunk sizes that balance compute and memory
+- Large amounts of data points (high compute + memory required).
+- Runtime of xarray processing due to dataset size and possibly slow I/O.
+- Choosing chunk sizes that balance compute and memory.
 - Best possible data structures and cloud storage formats for faster access like Zarr.
-- Memory concerns since loading global data across decades is not feasible without chunking or lazy loading
-- Latency and request response time (looking towards caching etc.)
-- Scalability as user base increases
+- Memory concerns since loading global data across decades is not feasible without chunking or lazy loading.
+- Latency and request response time (caching etc.).
+- Scalability as user base increases.
 
 After computing the global max map once, I would persist it into a cloud-friendly format like Zarr so the application can read it quickly without scanning decades of raw NetCDF files again.
 
@@ -27,11 +26,11 @@ After computing the global max map once, I would persist it into a cloud-friendl
 
 2. System might not be able to handle all of those points in memory at the same time, could we reduce temporal resolution or use adaptive temporal resolution for animation, hourly for recent years, daily/monthly for older decades, to balance fidelity and performance?
 
-3. Would it make sense to pre-render visual tiles at the edges to reduce latency for users globally?
+3. Would pre-rendered tiles or server-generated time slices be acceptable instead of streaming raw data?
 
 4. Do we assume the UI should support global coverage immediately, or is it realistic to load only user-selected regions first?
 
-5. Are there key exploratory workflows we need to support, such as comparing historical extremes across regions or exporting data for analysis?
+5. Are there key workflows we need to support, such as comparing historical extremes across regions or exporting data for analysis?
 
 # Overall Approach
 
@@ -55,12 +54,12 @@ After computing the global max map once, I would persist it into a cloud-friendl
 
 ### 5. Deployment
 - **Next.js on Netlify**  
-  - Automatic CI/CD  
-  - Simple integration
+  - Automatic CI/CD. 
+  - Simple integration.
 
 - **FastAPI on Railway**  
-  - Rapid API deployment  
-  - Clean and minimal setup
+  - Rapid API deployment.  
+  - Clean and minimal setup.
 
 # Trade-offs Made to Meet the Time Limit
 
@@ -70,7 +69,7 @@ a. **Ignored scalability for faster development.**
 b. **Skipped caching to save time.**  
    - I would implement API-level caching (e.g., Redis) to drastically reduce request latency and repeated NetCDF loads.
 
-c. **Relaxed strict typing and validation.**  
+c. **Ignored typing and validation.**  
    - I would use mypy, pydantic models, and clear validation rules to reduce bugs.
 
 d. **Chose simple deployment platforms (Netlify + Railway).**  
