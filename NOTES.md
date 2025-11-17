@@ -36,8 +36,8 @@ After computing the global max map once, I would persist it into a cloud-friendl
 # Overall Approach
 
 ### 1. Split the application into two independent layers
-- **Python backend** — best suited for heavy data processing with xarray.
-- **Next.js frontend** — ideal for interactive UIs and map rendering.
+- **Python backend**: best suited for heavy data processing with xarray.
+- **Next.js frontend**: ideal for interactive UIs and map rendering.
 
 ### 2. Next.js Frontend
 - Integrates well with Mapbox and react-map-gl.
@@ -62,7 +62,7 @@ After computing the global max map once, I would persist it into a cloud-friendl
   - Rapid API deployment  
   - Clean and minimal setup
 
-# 2. Trade-offs Made to Meet the Time Limit
+# Trade-offs Made to Meet the Time Limit
 
 a. **Ignored scalability for faster development.**  
    - For production, I would preprocess and store pre-computed wave values per lat/lon in a database or tile-based structure.
